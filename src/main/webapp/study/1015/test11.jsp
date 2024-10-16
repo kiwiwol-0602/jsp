@@ -3,30 +3,21 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>test07Member.jsp</title>
+  <title>test11.jsp</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
-  
-  <script>
-    'use strict';
-    
-    function logoutCheck() {
-    	alert("로그아웃 합니다.");
-    	location.href = "test07.jsp";
-    }
-  </script>
 </head>
 <body>
 <p><br/></p>
 <div class="container">
-  <h2>이곳은 회원 전용방 입니다.</h2>
+  <h2>서블릿에서의 호출 수행 순서 확인</h2>
   <hr/>
-  <div><img src="<%=request.getContextPath()%>/images/12.jpg" width="500px" /></div>
-  <hr/>
-  <div><a href="javascript:logoutCheck('<%=request.getContextPath() %>/study/1016/t02_Dispatcher.jsp')" class="btn btn-success">로그아웃</a></div>
-  <hr/>
+  <form method="post" action="<%=request.getContextPath()%>/1015/Test11Ok">
+ 	 <div><button type="button" onclick="location.href='<%=request.getContextPath()%>/1015/Test11Ok'" class="btn btn-success">확인1</button></div>
+ 	 <div><button type="submit" class="btn btn-primary">확인2</button></div>
+	</form>
 </div>
 <p><br/></p>
 </body>
