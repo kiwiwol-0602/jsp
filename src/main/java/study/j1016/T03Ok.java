@@ -2,7 +2,9 @@ package study.j1016;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URLEncoder;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,8 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 
 @SuppressWarnings("serial")
 @WebServlet("/1016/T03Ok")
-public class T03Ok extends HttpServlet{
-
+public class T03Ok extends HttpServlet {
+	
 	@Override
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
@@ -25,7 +27,7 @@ public class T03Ok extends HttpServlet{
 		String job = request.getParameter("job");
 		String[] mountains = request.getParameterValues("mountain");
 		String content = request.getParameter("content")==null ? "" : request.getParameter("content");
-		String fName = request.getParameter("fName")==null ? "" : request.getParameter("fName");
+		int flag = Integer.parseInt(request.getParameter("flag"));
 		
 		System.out.println("성명 : " + name);
 		System.out.println("나이 : " + age);
@@ -38,8 +40,8 @@ public class T03Ok extends HttpServlet{
 			}
 			hobby = hobby.substring(0, hobby.length()-1);
 		}
-		System.out.println("취미 : "+hobby);
-		System.out.println("직업 : "+job);
+		System.out.println("취미 : " + hobby);
+		System.out.println("직업 : " + job);
 		
 		String mountain = "";
 		if(mountains != null) {
@@ -48,24 +50,60 @@ public class T03Ok extends HttpServlet{
 			}
 			mountain = mountain.substring(0, mountain.length()-1);
 		}
-		System.out.println("다녀온산 : "+mountain);
+		System.out.println("다녀온산 : " + mountain);
 		
-		content = content.replace("\n", "<br/>");
 		System.out.println("자기소개 : " + content);
-		
+		content = content.replace("\n", "<br/>");
+		String fName = request.getParameter("fName")==null ? "" : request.getParameter("fName");
 		System.out.println("첨부파일 : " + fName);
 		
-		PrintWriter out = response.getWriter();
-		out.println("<h2>기록한 내용들</h2>");
-		out.println("<p>성명 : "+name+"</p>");
-		out.println("<p>나이 : "+age+"</p>");
-		out.println("<p>성별 : "+gender+"</p>");
-		out.println("<p>취미 : "+hobby+"</p>");
-		out.println("<p>직업 : "+job+"</p>");
-		out.println("<p>다녀온산 : "+mountain+"</p>");
-		out.println("<p>자기소개 : <br/>"+content+"</p>");
-		out.println("<p>첨부파일 : "+fName+"</p>");
-		out.println("<hr/>");
-		out.println("<p><a href='"+request.getContextPath()+"/study/1016/t03_Form.jsp'>돌아가기</a></p>");
+		String viewPage = "";
+		switch (flag) {
+			case 1:
+				PrintWriter out = response.getWriter();
+				out.println("<h2>기록한 내용들</h2>");
+				out.println("<hr/>");
+				out.println("<p>성명 : "+name+"</p>");
+				out.println("<p>나이 : "+age+"</p>");
+				out.println("<p>성별 : "+gender+"</p>");
+				out.println("<p>취미 : "+hobby+"</p>");
+				out.println("<p>직업 : "+job+"</p>");
+				out.println("<p>가본산 : "+mountain+"</p>");
+				out.println("<p>자기소개 : <br/>"+content+"</p>");
+				out.println("<p>첨부파일 : "+fName+"</p>");
+				out.println("<hr/>");
+				out.println("<p><a href='"+request.getContextPath()+"/study/1016/t03_Form.jsp'>돌아가기</a></p>");
+				break;
+			case 2: //location방식과 유사한 sendredirect : get방식
+				//viewPage = request.getContextPath()+"/study/1016/t03_res.jsp"; //get방식이라서 ?하고 누적값으로 변수를 담음
+				viewPage = request.getContextPath()+"/study/1016/t03_res2.jsp"; //get방식이라서 ?하고 누적값으로 변수를 담음
+				viewPage += "?name=" + URLEncoder.encode(name, "utf-8");
+				viewPage += "&age=" + age;
+				viewPage += "&gender=" + URLEncoder.encode(gender, "utf-8");
+				viewPage += "&hobby=" + URLEncoder.encode(hobby, "utf-8");
+				viewPage += "&job=" + URLEncoder.encode(job, "utf-8");
+				viewPage += "&mountain=" + URLEncoder.encode(mountain, "utf-8");
+				viewPage += "&content=" + URLEncoder.encode(content, "utf-8");
+				viewPage += "&fName=" + URLEncoder.encode(fName, "utf-8");
+				viewPage += "&title=" + "sendRedirect"; //전송방식이름(제목에 출력됨) 
+				response.sendRedirect(viewPage);
+				break;
+			case 3: // 직렬화 action 태그와 비슷한 dispatcher
+				request.setAttribute("name", name); //request 저장소에 저장(1번만 사용가능)
+				request.setAttribute("age", age);
+				request.setAttribute("gender", gender);
+				request.setAttribute("hobby", hobby);
+				request.setAttribute("job", job);
+				request.setAttribute("mountain", mountain);
+				request.setAttribute("content", content);
+				request.setAttribute("fName", fName);
+				request.setAttribute("title", "forword"); //전송방식이름(제목에 출력됨)
+				//viewPage = "/study/1016/t03_res.jsp";
+				viewPage = "/study/1016/t03_res2.jsp";
+				RequestDispatcher dispatcher = request.getRequestDispatcher(viewPage); // 값 불러옴
+				dispatcher.forward(request, response); //값 보냄
+				break;
+		}
 	}
+	
 }
