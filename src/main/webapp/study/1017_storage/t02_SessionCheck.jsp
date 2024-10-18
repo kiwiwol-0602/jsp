@@ -23,6 +23,8 @@
   <p>닉네임: ${nickName}</p>
   <p>성  명: ${name}</p>
   <hr/>
+  <p>세션 아이디 : <%=session.getId() %>
+  <hr/>
   <p><a href="t02_Session.jsp" class="btn btn-info">돌아가기</a></p>
 </div>
 <p><br/></p>
