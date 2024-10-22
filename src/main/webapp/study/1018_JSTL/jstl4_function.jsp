@@ -43,6 +43,8 @@
   <jsp:include page="/include/bs4.jsp" />
 </head>
 <body>
+<jsp:include page="/include/header.jsp"/>
+<jsp:include page="/include/nav.jsp"/>
 <p><br/></p>
 <div class="container">
   <h2>JSTL Function 라이브러리</h2>
@@ -83,6 +85,13 @@
     6-1.substringAfter()  / substringBefore():
     ${fn:substringAfter(str,'o')} / ${fn:substringBefore(str,'o')}<br/><br/>
     6-2.str변수의 2번째 'o'문자의 위치만 구하시오. : 
+    <c:set var="cnt" value="0"/>
+    <c:forEach var="i" begin="0" end="${fn:length(str)-1}">
+    	<c:if test="${fn:substring(str, i, i+1) == 'o'}">
+    	  <c:set var="cnt" value="${cnt + 1}"/>
+    	  ${cnt==2}
+    	</c:if>
+    </c:forEach>
     
     <hr/>
     
@@ -113,5 +122,6 @@
   </div>
 </div>
 <p><br/></p>
+<jsp:include page="/include/footer.jsp"/>
 </body>
 </html>
