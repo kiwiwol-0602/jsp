@@ -2,7 +2,8 @@
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="ctp" value="${pageContext.request.contextPath}"/>
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-  <a class="navbar-brand" href="${ctp}/">HOME</a>
+  <%-- <a class="navbar-brand" href="${ctp}/">HOME</a> --%>
+  <a class="navbar-brand" href="http://192.168.50.55:9090/javaGroup">HOME</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -23,7 +24,8 @@
 			      Study1
 			    </button>
 			    <div class="dropdown-menu">
-			      <a class="dropdown-item" href="${ctp}/study/mapping/Test1">Mapping</a>
+			      <a class="dropdown-item" href="${ctp}/study2/mapping/Test1">Mapping(Directory Pattern)</a>
+			      <a class="dropdown-item" href="${ctp}/study2/mapping/Test2">Mapping(Extension Pattern)</a>
 			      <a class="dropdown-item" href="${ctp}/study2/mapping/Storage">Storage</a>
 			      <a class="dropdown-item" href="${ctp}/study/1018_JSTL/el.jsp">EL</a>
 			      <a class="dropdown-item" href="${ctp}/study2/jstl/JstlMenu">JSTL</a>
@@ -31,5 +33,5 @@
 			  </div>    
       </li>
     </ul>
-  </div>  
+  </div>
 </nav>
