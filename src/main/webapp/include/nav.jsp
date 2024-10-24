@@ -29,6 +29,7 @@
 			      <a class="dropdown-item" href="${ctp}/study2/mapping/Storage">Storage</a>
 			      <a class="dropdown-item" href="${ctp}/study/1018_JSTL/el.jsp">EL</a>
 			      <a class="dropdown-item" href="${ctp}/study2/jstl/JstlMenu">JSTL</a>
+			      <a class="dropdown-item" href="${ctp}/study2/database/Dblist">Database</a>
 			    </div>
 			  </div>    
       </li>

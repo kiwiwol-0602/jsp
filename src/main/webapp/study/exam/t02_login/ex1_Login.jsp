@@ -60,7 +60,7 @@
 <!-- 		      <button type="submit" class="btn btn-info mr-2">로그인</button> -->
 		      <button type="button" onclick="fCheck()" class="btn btn-info mr-2">로그인</button>
 		      <button type="reset" class="btn btn-warning mr-2">다시입력</button>
-		      <button type="button" onclick="locarion.htef=''" class="btn btn-primary mr-2">회원가입</button>
+		      <button type="button" onclick="location.href=''" class="btn btn-primary mr-2">회원가입</button>
 		     </td>
 		  </tr>
 	  </table>
