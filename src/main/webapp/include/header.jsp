@@ -3,7 +3,7 @@
 <c:set var="ctp" value="${pageContext.request.contextPath}"/>
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
-<div class="jumbotron text-center" style="margin:0px; height:170px; line-height: 30px; padding-top: 30px;">
+<div class="jumbotron text-center" style="margin:0px; height:170px; line-height: 30px; padding-top: 30px; border-radius: 0;">
   <h1 style="font-family: 'Lobster', cursive; font-size: 65px; text-decoration: underline; text-decoration-thickness:1.5px;"><a href="${ctp}/" style="color: black;">HS._.yeon</a></h1>
   <p style="font-family: 'Lobster', cursive; font-size: 22px;">Welcome to SoYeon Page</p>
 </div>
