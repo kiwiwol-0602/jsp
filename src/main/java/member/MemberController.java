@@ -38,8 +38,23 @@ public class MemberController extends HttpServlet{
 			command.execute(request, response);
 			viewPage += "/memberMain.jsp";
 		}
-		if(com.equals("/MemberJoin")) { //회원가입 입력창
+		else if(com.equals("/MemberJoin")) { //회원가입 입력창
 			viewPage += "/memberJoin.jsp";
+		}
+		else if(com.equals("/MemberJoinOk")) {
+			command = new MemberJoinOkCommand();
+			command.execute(request, response);
+			viewPage = "/include/message.jsp";
+		}
+		else if(com.equals("/MemberIdCheck")) {
+			command = new MemberIdCheckCommand();
+			command.execute(request, response);
+			viewPage += "/memberIdCheck.jsp";
+		}
+		else if(com.equals("/MemberNickNameCheck")) {
+			command = new MemberNickNameCheckCommand();
+			command.execute(request, response);
+			viewPage += "/memberNickNameCheck.jsp";
 		}
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher(viewPage);
