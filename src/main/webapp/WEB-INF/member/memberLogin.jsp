@@ -9,15 +9,6 @@
   <title>memberLogin.jsp</title>
   <jsp:include page="/include/bs4.jsp"/>
 </head>
-<%
-	Cookie[] cookies = request.getCookies();
-
-		for(int i=0; i<cookies.length; i++){
-			if(cookies[i].getName().equals("cMid")){
-				pageContext.setAttribute("mid", cookies[i].getValue());
-			}
-		}
-%>
 <body>
 <jsp:include page="/include/header.jsp"/>
 <jsp:include page="/include/nav.jsp"/>

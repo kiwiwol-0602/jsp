@@ -10,7 +10,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>memberSignUp.jsp</title>
+  <title>memberJoin.jsp</title>
   <jsp:include page="/include/bs4.jsp"/>
   <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
   <script src="${ctp}/js/woo.js"></script>
@@ -26,38 +26,14 @@
 	</style>
   <script>
 	  'use strict';
-	  
-	  function fCheck(){
-		  /*정규식 처리*/
-			let mid = myform.mid.value;
-			let pwd = myform.pwd.value;
-			let nickName = myform.nickName.value;
-			let name = myform.name.value;
-			
 			let regMid = /^[a-zA-Z0-9_]{4,20}$/;
 			let regNickName = /^[가-힣0-9_]{2,20}$/;
 			let regName = /^[가-힣a-zA-Z]{2,20}$/
-			
-			if(!regMid.test(mid)){
-				
-			}
-			if(pwd){
-				
-			}
-			if(!regNickName.test(nickName)){
-				
-			}
-			if(!regName.test(name.trim())){
-				
-				$('#checkName').text('성명을 확인해주세요 :)');
-				$('#checkName').css('color', 'red'); 
-			}
-			
-			
-		  
-		  
-		  
-		  //-------------------------------------//
+			let regEmail = /^[0-9a-zA-Z]([\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+			let regTel = /^([0-9]{3})[-]([0-9]{3,4})[-]([0-9]{4})$/;
+	  
+	  function fCheck(){
+		  // 전화번호, 이메일, 주소생성
 	    let tel2 = myform.tel2.value.trim(); 
 	    let tel3 = myform.tel3.value.trim(); 
 	    if(tel2 == ""){
@@ -66,15 +42,61 @@
 	    if(tel3 == ""){
 	       tel3 = " ";
 	    }
+	    
 	    let tel = myform.tel1.value + "-" + tel2 + "-" + tel3; 
 	    let email = myform.email1.value + myform.email2.value + myform.email3.value; 
 	    let address = myform.postcode.value + " /" + myform.address.value + " /" + myform.detailAddress.value + " /" + myform.extraAddress.value;
+	    
 	    /* 유효성 검사(정규식으로 처리) */
-	   
  	    myform.tel.value = tel;
  	    myform.email.value = email;
 	    myform.address2.value = address;
 	   
+		  /*정규식 처리*/
+			let mid = myform.mid.value;
+			let pwd = myform.pwd.value;
+			let nickName = myform.nickName.value;
+			let name = myform.name.value;
+			
+			
+		  if (!regMid.test(mid.trim())) {
+	      alert("아이디는 영문 대/소문자와 숫자, 그리고 밑줄(_)을 포함하여 4~20자까지 가능합니다.");
+	      document.getElementById("mid").value = "";  // 수정
+	      document.getElementById("mid").focus();  // 수정
+	      return false;
+    	} else if(pwd.length < 2 || pwd.length > 20) {
+        alert("비밀번호는 2~20 자리로 작성해주세요.");
+        myform.pwd.focus();
+        return false;
+  		} else if (!regNickName.test(nickName.trim())) {
+        alert("닉네임은 한글만 사용 가능합니다.");
+        document.getElementById("nickName").value = "";  // 수정
+        document.getElementById("nickName").focus();  // 수정
+        return false;
+    	} else if (!regName.test(name.trim())) {
+        alert("성명은 한글, 영어, 숫자만 사용 가능합니다.");
+        document.getElementById("name").value = "";  // 수정
+        document.getElementById("name").focus();  // 수정
+        return false;
+   		 } else if (!regEmail.test(email.trim())) {
+        alert("이메일주소는 이메일 형식에 맞도록 작성해 주세요.");
+        myform.email.value = "";
+        document.getElementById("email1").focus();  // 수정
+        return false;
+    	} else if (!regTel.test(tel.trim())) {
+        alert("전화번호는 지역번호(3)-국번호(3~4)-전화번호(4) 형식을 맞춰주세요. 예) 010-1234-5678");
+        document.getElementById("tel").focus();  // 수정
+        return false;
+   	  }
+		  // 중복체크
+    	if (!myform.idCk || myform.idCk.value < 1) {
+        alert("아이디 중복체크를 진행해주세요.");
+        return false;
+   	  } else if (!myform.nickCk || myform.nickCk.value < 1) {
+        alert("닉네임 중복체크를 진행해주세요.");
+        return false;
+		        }
+		  //-------------------------------------//
 	    myform.submit();
   	}
 	  
@@ -89,6 +111,7 @@
 			else {
 				let url = "MemberIdCheck.mem?mid="+mid;
 				window.open(url, "idCheckWindow", "width=500px, height=400px");
+				myform.idCk.value = 1;//중복 체크 완료
 			}
 	  }
 	  function nickNameCheck() {
@@ -101,8 +124,36 @@
 			else {
 				let url = "MemberNickNameCheck.mem?nickName="+nickName;
 				window.open(url, "nickNameCheckWindow", "width=500px, height=400px");
+				myform.nickCk.value = 1;//중복 체크 완료
 			}
 	  }
+	  
+	  function nickNameajaxCheck() {
+			let nickName = myform.nickName.value;
+			if (!regNickName.test(nickName.trim())) {
+	      alert("닉네임은 한글만 사용 가능합니다.");
+	      document.getElementById("nickName").value = "";  // 수정
+	      document.getElementById("nickName").focus();  // 수정
+	      return false;
+			}
+			
+			$.ajax({
+				type : "get",
+				url  : "NickNameAjaxCheck.mem",
+				data : {nickName : nickName},
+				success : function (res) {
+					if(res != "0"){
+						alert("닉네임이 중복되었습니다.\n다른 닉네임을 사용하세요.");
+					}
+					else {
+						alert("사용하실 수 있는 닉네임 입니다.")
+					}
+				},
+				error : function () {
+					alert("전송오류");
+				}
+			});
+	}
    </script>
 </head>
 <body>
@@ -141,7 +192,8 @@
           <div class="input-group">
             <input type="text" name="nickName" id="nickName" placeholder="닉네임을 입력하세요"  class="form-control" required />
             <div class="input-group-append">
-            	<input type="button" value="닉네임 중복체크" onclick="nickNameCheck()" class="btn btn-outline-success ml-2"/>
+            	<!-- <input type="button" value="닉네임 중복체크" onclick="nickNameCheck()" class="btn btn-outline-success ml-2"/> -->
+            	<input type="button" value="닉네임 중복체크" onclick="nickNameajaxCheck()" class="btn btn-outline-success ml-2"/>
             </div>
           </div>
         </td> 
@@ -186,11 +238,11 @@
 				<th>주소</th>
 				<td>
 					<div class="input-group mb-2">
-						<input type="text" name="postcode" id="sample6_postcode" placeholder="우편번호" class="form-control" style="width: 14%; margin-right: 1%;" readonly>
+						<input type="text" name="postcode" id="sample6_postcode" onclick="sample6_execDaumPostcode()" placeholder="우편번호" class="form-control" style="width: 14%; margin-right: 1%;" readonly>
 						<input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기" class="form-control btn-outline-secondary" style="width: 15%;">
 						<input type="text" class="border-less" style="width: 70%; border: none;">
 					</div>
-					<input type="text" name="address" id="sample6_address" placeholder="주소" class="form-control mb-2">
+					<input type="text" name="address" id="sample6_address" onclick="sample6_execDaumPostcode()"placeholder="주소" class="form-control mb-2" readonly>
 					<div class="input-group">					
 						<input type="text" name="detailAddress" id="sample6_detailAddress" placeholder="상세주소" class="form-control"style="width: 70%;">
 						<input type="text" name="extraAddress" id="sample6_extraAddress" placeholder="참고항목" class="form-control"style="width: 30%;">
@@ -246,6 +298,8 @@
   	<input type="hidden" name="tel" id="tel" />
 		<input type="hidden" name="email" id="email" />
 		<input type="hidden" name="address2" id="address2" />
+		<input type="hidden" name="idCk" id="idCk" value="0" />
+		<input type="hidden" name="nickCk" id="nickCk" value="0"/>
   </form>
 </div>
 <p><br/></p>

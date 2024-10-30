@@ -52,6 +52,25 @@ public class MemberLoginOKCommand implements MemberInterface {
 			return;
 		}
 		
+		//=======================로그인 처리된 회원을 처리=====================//
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		// 동일한 아이디가 검색되었다면 비밀번호가 맞는지 확인 후
 		// 입력받은 비밀번호를 암호화 시켜서 DB에 암호화 되어 저정되어 있는 비밀번호와 비교한다.
 		
@@ -62,8 +81,31 @@ public class MemberLoginOKCommand implements MemberInterface {
 		//}
 		
 		// 정상적인 로그인이 되었을 때 처리할 내용을 기술한다.
-		// (숙제)todayCnt를 이용하여 방문포인트를 5회 미만일 경우에 10point씩 증가처리한다.
+		// 세션에 저장할 항목 : mid, nickName
+		HttpSession session = request.getSession();
+		session.setAttribute("sMid", mid);
+		session.setAttribute("sNickName", vo.getNickName());
+		session.setAttribute("sLevel", vo.getLevel());
+		session.setAttribute("sLastDate", vo.getLastDate()); //최근방문일을 세션에저장
 		
+		//회원등급별 등급명칭을 strLevel변수에 저장한다.
+		String strLevel = "";
+		if(vo.getLevel() == 0) {
+			strLevel = "관리자";
+		}
+		else if(vo.getLevel() == 1) {
+			strLevel = "준회원";
+		}
+		else if(vo.getLevel() == 2) {
+			strLevel = "정회원";
+		}
+		else if(vo.getLevel() == 3) {
+			strLevel = "우수회원";
+		}
+		
+		session.setAttribute("strLevel", strLevel);
+		
+		// (숙제)todayCnt를 이용하여 방문포인트를 5회 미만일 경우에 10point씩 증가처리한다.
 		// 방문포인트 10증가, 방문카운트(visitCnt,todayCnt) 1증가, 마지막날짜(최종방문일자:lastDate) 수정
 		Date today = new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -80,13 +122,11 @@ public class MemberLoginOKCommand implements MemberInterface {
 				vo.setPoint(vo.getPoint()+10);
 			}
 		}
+		//최근 방문일을 세션에 담아둔다.
 		
-		dao.setPonintPlus(mid,vo);
 		
-		// 세션에 저장할 항목 : mid, nickName
-		HttpSession session = request.getSession();
-		session.setAttribute("sMid", mid);
-		session.setAttribute("sNickName", vo.getNickName());
+		dao.setPonintPlus(vo);
+		
 		
 		// 방문횟수(총/오늘) 누적, 마지막 방문일자 처리, 준 회원을 자동으로 등업처리 할 경우 수행 내용 등등..
 		// 처리 완료된 자료들은 작업 수행이 진행되는 동안 꼭 필요한 정보만을 Session에 저장한다.
