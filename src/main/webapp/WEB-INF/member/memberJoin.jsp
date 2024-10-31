@@ -45,7 +45,7 @@
 	    
 	    let tel = myform.tel1.value + "-" + tel2 + "-" + tel3; 
 	    let email = myform.email1.value + myform.email2.value + myform.email3.value; 
-	    let address = myform.postcode.value + " /" + myform.address.value + " /" + myform.detailAddress.value + " /" + myform.extraAddress.value;
+	    let address = myform.postcode.value + " /" + myform.address.value + " /" + myform.detailAddress.value + " /" + myform.extraAddress.value + " ";
 	    
 	    /* 유효성 검사(정규식으로 처리) */
  	    myform.tel.value = tel;
@@ -114,6 +114,7 @@
 				myform.idCk.value = 1;//중복 체크 완료
 			}
 	  }
+	  //닉네임 중복체크
 	  function nickNameCheck() {
 			let nickName = myform.nickName.value;
 			
@@ -147,6 +148,7 @@
 					}
 					else {
 						alert("사용하실 수 있는 닉네임 입니다.")
+						myform.nickCk.value = 1;//중복 체크 완료
 					}
 				},
 				error : function () {

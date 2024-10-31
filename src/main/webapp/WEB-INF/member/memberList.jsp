@@ -26,13 +26,13 @@
  		<table class="table table-hover text-center">
  			<tr class="table-secondary">
  				<th>번호</th>
- 				<th>등급</th>
- 				<th>성명</th>
  				<th>닉네임</th>
+ 				<th>성명</th>
  				<th>아이디</th>
  				<th>성별</th>
  				<th>생년월일</th>
  				<th>이메일</th>
+ 				<th>등급</th>
  				<th>최종방문일</th>
  			</tr>
  			<c:forEach var="vo" items="${vos}" varStatus="st">
@@ -43,7 +43,7 @@
 						<td><a href="#">${vo.name}</a></td>
 						<td>${vo.mid}</td>
 						<td>${vo.gender}</td>
-						<td>${vo.birthday}</td>
+						<td>${vo.birthday.substring(0,10)}</td>
 						<td>${vo.email}</td>
 						<td>${vo.level}</td>
 						<td>
@@ -52,11 +52,11 @@
 						</td>
 					</c:if>
 					<c:if test="${vo.userInfor != '공개'}">
-						<td colspan="6" class="text-center">비 공 개</td>
+						<td colspan="7" class="text-center">비 공 개</td>
 					</c:if>
 	 			</tr>
  			</c:forEach>
- 			<tr><td colspan="5" class="m-0 p-0"></tr>
+ 			<tr><td colspan="9" class="m-0 p-0"></tr>
  		</table>
  	</div>
 	<div class="input-group mt-1">
