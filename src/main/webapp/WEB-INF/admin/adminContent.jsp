@@ -9,8 +9,6 @@
   <jsp:include page="/include/bs4.jsp"/>
 </head>
 <body>
-<jsp:include page="/include/header.jsp"/>
-<jsp:include page="/include/nav.jsp"/>
 <p><br/></p>
 <div class="container">
   <h3>관리자 메인화면</h3>
@@ -27,6 +25,5 @@
    <p>탈퇴 신청 회원 : _건</p>
 </div>
 <p><br/></p>
-<jsp:include page="/include/footer.jsp"/>
 </body>
 </html>

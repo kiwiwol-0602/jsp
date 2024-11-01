@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import admin.member.MemberDetailViewCommand;
 import admin.member.MemberLevelChangeCommand;
 import admin.member.MemberListCommand;
 import study2.ajax.AjaxIdCheck0Command;
@@ -58,7 +59,11 @@ public class AdminController extends HttpServlet{
 			command.execute(request, response);
 			return;
 		}
-		
+		else if(com.equals("/MemberDetailView")) {
+			command = new MemberDetailViewCommand();
+			command.execute(request, response);
+			viewPage += "/member/memberDetailView.jsp";
+		}
 		
 		/*
 		 * else if(com.equals("/PassCheckOk")) { command = new PassCheckOkCommand();

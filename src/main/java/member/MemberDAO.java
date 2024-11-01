@@ -161,11 +161,22 @@ public class MemberDAO {
 	}
 	
 	//전체 회원 리스트 처리
-	public ArrayList<MemberVO> getMemberList() {
+	public ArrayList<MemberVO> getMemberList(int startIndexNo, int pageSize, int level) {
 		ArrayList<MemberVO> vos = new ArrayList<MemberVO>();
 		try {
-			sql = "select * from member order by idx desc";
-			pstmt = conn.prepareStatement(sql);
+			if(level == 999) {
+				sql = "select *, datediff(now(),lastDate) as elapsed_date from member order by idx desc limit ?,?";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, startIndexNo);
+				pstmt.setInt(2, pageSize);
+			}
+			else {
+				sql = "select *, datediff(now(),lastDate) as elapsed_date from member where level=? order by idx desc limit ?,?";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, level);
+				pstmt.setInt(2, startIndexNo);
+				pstmt.setInt(3, pageSize);
+			}
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
@@ -190,6 +201,7 @@ public class MemberDAO {
 				vo.setTodayCnt(rs.getInt("todayCnt"));
 				vo.setStartDate(rs.getString("startDate"));
 				vo.setLastDate(rs.getString("lastDate"));
+				vo.setElapsed_date(rs.getInt("elapsed_date"));
 				vos.add(vo);
 			}
 		} catch (SQLException e) {
@@ -289,5 +301,71 @@ public class MemberDAO {
 		}
 		
 		return res;
+	}
+	
+	//회원의 총 인원수 구하기
+	public int getTotRecCnt(int level) {
+		int totRecCnt = 0;
+		
+		try {
+			if(level == 999) {
+				sql = "select count(idx) as totRecCnt from member";
+				pstmt = conn.prepareStatement(sql);
+			}
+			else {
+				sql = "select count(idx) as totRecCnt from member where level = ?";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, level);
+			}
+			rs = pstmt.executeQuery();
+			
+			rs.next();
+			totRecCnt = rs.getInt("totRecCnt");
+			
+		} catch (SQLException e) {
+			System.out.println("SQL 오류 : " + e.getMessage());
+		}	finally {
+			rsClose();
+		}
+		return totRecCnt;
+	}
+		
+	// 회원 상세정보 가져오기
+		public MemberVO getMemberIdxCheck(int idx) {
+			MemberVO vo = new MemberVO();
+			try { 
+				sql = "select * from member where idx = ?";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, idx);
+				rs = pstmt.executeQuery();
+				
+				if(rs.next()) {
+					vo.setIdx(rs.getInt("idx"));
+					vo.setMid(rs.getString("mid"));
+					vo.setPwd(rs.getString("pwd"));
+					vo.setNickName(rs.getString("nickName"));
+					vo.setName(rs.getString("name"));
+					vo.setGender(rs.getString("gender"));
+					vo.setBirthday(rs.getString("birthday"));
+					vo.setTel(rs.getString("tel"));
+					vo.setAddress(rs.getString("address"));
+					vo.setEmail(rs.getString("email"));
+					vo.setContent(rs.getString("content"));
+					vo.setPhoto(rs.getString("photo"));
+					vo.setLevel(rs.getInt("level"));
+					vo.setUserInfor(rs.getString("userInfor"));
+					vo.setUserDel(rs.getString("userDel"));
+					vo.setPoint(rs.getInt("point"));
+					vo.setVisitCnt(rs.getInt("visitCnt"));
+					vo.setTodayCnt(rs.getInt("todayCnt"));
+					vo.setStartDate(rs.getString("startDate"));
+					vo.setLastDate(rs.getString("lastDate"));
+				}
+			} catch (SQLException e) {
+				System.out.println("SQL 오류 : " + e.getMessage());
+			}	finally {
+				rsClose();
+			}
+			return vo;
 	}
 }

@@ -80,7 +80,7 @@ public class MemberLoginOKCommand implements MemberInterface {
 		
 		//회원등급별 등급명칭을 strLevel변수에 저장한다. (자동등업에서도 사용하기에 메소드 처리)
 		String strLevel = strLevelProcess(vo.getLevel());
-		session.setAttribute("strLevel", strLevel);
+		session.setAttribute("sStrLevel", strLevel);
 		
 		// (숙제)todayCnt를 이용하여 방문포인트를 5회 미만일 경우에 10point씩 증가처리한다.
 		// 방문포인트 10증가, 방문카운트(visitCnt,todayCnt) 1증가, 마지막날짜(최종방문일자:lastDate) 수정

@@ -6,8 +6,17 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>memberList.jsp</title>
+  <title>memberList.jsp(admin)</title>
   <jsp:include page="/include/bs4.jsp"/>
+  <style>
+  	body {
+		  font-size: 0.8em;
+  	}
+    th, td {
+      text-align: center;
+    }
+  
+  </style>
   <script>
   function levelChange(e) {
 	  //let level = document.getElementById("level").value;
@@ -38,24 +47,48 @@
 			}
 	  });
 	}
+  
+  // 등급별 조회
+  function levelViewCheck() {
+		let level = document.getElementById("levelView").value;
+		location.href = "MemberList.ad?&pageSize=${pageSize}&pag=${pag}&level="+level;
+	}
+  
+  // 사용자 페이지 설정
+  function pageSizeChange() {
+		let pageSize = document.getElementById("pageSize").value;
+		location.href = "MemberList.ad?pageSize="+pageSize+"&pag=${pag}&level=${level}";
+	}
   </script>
 </head>
 <body>
 <p><br/></p>
 <div class="container">
-  <h2>회 원 리 스 트</h2>
-  <hr/>
-  <div class= "row">
-  	<div class="col text-right"><a href="#" class="btn btn-primary">전체검색</a></div>
-  </div>
-  <hr/>
+  <h2 class="text-center">회 원 리 스 트</h2>
+  <form action="#">
+	  <table class="table table-borderless" style="margin-bottom: 0;">
+	  	<tr>
+	  		<td>
+	  			<select name="levelView" id="levelView" onchange="levelViewCheck()" class="form-control float-right " style="width: 150px;" >
+						<option value=""   <c:if test="${empty level}">selected</c:if> >전체회원</option>  		
+						<option value="0"  <c:if test="${level == 0}">selected</c:if>  >관리자</option>  			
+						<option value="1"  <c:if test="${level == 1}">selected</c:if>  >준회원</option>  			
+						<option value="2"  <c:if test="${level == 2}">selected</c:if>  >정회원</option>  			
+						<option value="3"  <c:if test="${level == 3}">selected</c:if>  >우수회원</option>  			
+						<option value="99" <c:if test="${level == 99}">selected</c:if> >탈퇴예정회원</option>  			
+	  			</select>
+	  		</td>
+	  	</tr>
+	  </table>
+	</form>
+  <hr style="margin-top: 0"/>
  	<div>
  		<table class="table table-hover text-center">
  			<tr class="table-secondary">
  				<th>번호</th>
+ 				<th>아이디</th>
  				<th>닉네임</th>
  				<th>성명</th>
- 				<th>아이디</th>
  				<th>성별</th>
  				<th>생년월일</th>
  				<th>이메일</th>
@@ -66,9 +99,9 @@
  			<c:forEach var="vo" items="${vos}" varStatus="st">
 	 			<tr<c:if test="${vo.userInfor != '공개'}"> style="background-color:skyblue"</c:if>>
 					<td>${vo.idx}</td>
+					<td><a href="MemberDetailView.ad?idx=${vo.idx}">${vo.mid}</a></td>
 					<td>${vo.nickName}</td>
 					<td>${vo.name}</td>
-					<td>${vo.mid}</td>
 					<td>${vo.gender}</td>
 					<td>${vo.birthday.substring(0,10)}</td>
 					<td>${vo.email}</td>
@@ -78,7 +111,7 @@
 					</td>
 					<td>
             <c:if test="${vo.userDel == 'NO'}">활동 중</c:if>
-            <c:if test="${vo.userDel != 'NO'}"><font color="red">탈퇴 신청</font></c:if>
+            <c:if test="${vo.userDel != 'NO'}"><font color="red">탈퇴 신청</font>(${vo.elapsed_date}일)</c:if>
          </td>
 					<td>
 						<select name="level" id="level"	onchange="levelChange(this)">
@@ -93,6 +126,48 @@
  			</c:forEach>
  			<tr><td colspan="10" class="m-0 p-0"></tr>
  		</table>
+ 		
+ 		
+ 		
+ 		
+ 		<!-- 블록페이지 시작 -->
+	 <ul class="pagination justify-content-center" >
+	    <li class="page-item">
+	    	<c:if test="${pag>1}"><a class="page-link" href="MemberList.ad?level=${level}&pageSize=${pageSize}&pag=1">첫페이지</a></c:if>
+				<c:if test="${pag <= 1}"><span class="page-link disabled">첫페이지</span></c:if>
+	    </li>
+	    <li class="page-item">
+	    	<c:if test="${curBlock > 0}"><a class="page-link" href="MemberList.ad?level=${level}&pageSize=${pageSize}&pag=${((curBlock-1)*blockSize)+1}">이전블록</a></c:if>
+	    	<c:if test="${curBlock <= 0}"><span class="page-link disabled">이전블록</span></c:if>
+	    </li>
+		  <c:forEach var="i" begin="${(curBlock*blockSize)+1}" end="${(curBlock*blockSize)+blockSize}" varStatus="st">
+				<c:if test="${i<=totPage && i==pag}"><li class="page-item active"><a class="page-link" href="MemberList.ad?level=${level}&pageSize=${pageSize}&pag=${i}">${i}</a></li></c:if>
+				<c:if test="${i<=totPage && i!=pag}"><li class="page-item"><a class="page-link" href="MemberList.ad?level=${level}&pageSize=${pageSize}&pag=${i}">${i}</a></li></c:if>
+			</c:forEach>
+	    <li class="page-item">
+	    	<c:if test="${curBlock < lastBlock}"><a class="page-link" href="MemberList.ad?level=${level}&pageSize=${pageSize}&pag=${((curBlock+1)*blockSize)+1}">다음블록</a></c:if>
+	    	<c:if test="${curBlock >= lastBlock}"><span class="page-link disabled">다음블록</span></c:if>
+	    </li>
+	    <li class="page-item">
+	    	<c:if test="${pag<totPage}"><a class="page-link" href="MemberList.ad?level=${level}&pageSize=${pageSize}&pag=${totPage}">마지막페이지</a></c:if>
+	    	<c:if test="${pag>=totPage}"><span class="page-link disabled">마지막페이지</span></c:if>
+	    </li>
+ 		<!-- 사용자 페이지 설정 -->
+ 		<li style="float:right; padding-left: 50px">
+ 		<form action="#">
+			<select name="pageSize" id="pageSize" onchange="pageSizeChange()" class="form-control" style="width: 150px; height: 34px;" >
+				<option value="3"   <c:if test="${pageSize == 3}">selected</c:if>  > 3</option>  		
+				<option value="5"   <c:if test="${pageSize == 5}">selected</c:if>  > 5</option>  			
+				<option value="10"  <c:if test="${pageSize == 10}">selected</c:if> > 10</option>  			
+				<option value="15"  <c:if test="${pageSize == 15}">selected</c:if> > 15</option>  			
+				<option value="20"  <c:if test="${pageSize == 20}">selected</c:if> > 20</option>  			
+				<option value="30"  <c:if test="${pageSize == 30}">selected</c:if> > 30</option>  			
+			</select>
+	</form>
+	</li>
+	  </ul>
+<!-- 블록페이지 끝 -->	
+
  	</div>
 	<div class="input-group mt-1">
 		<div class="input-group-prepend"><div class="input-group-text">성명검색</div></div>

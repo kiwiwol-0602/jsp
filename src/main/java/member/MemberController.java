@@ -67,7 +67,7 @@ public class MemberController extends HttpServlet{
 			request.setAttribute("message", "로그인 후 사용하세요.");
 			request.setAttribute("url", "/MemberLogin.mem");
 			viewPage = "/include/message.jsp";
-		}
+		} 
 		
 		else if(com.equals("/MemberMain")) {
 			command = new MemberMainCommand();
