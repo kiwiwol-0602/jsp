@@ -97,7 +97,7 @@
  				<th>등급</th>
  			</tr>
  			<c:forEach var="vo" items="${vos}" varStatus="st">
-	 			<tr<c:if test="${vo.userInfor != '공개'}"> style="background-color:skyblue"</c:if>>
+	 			<tr<c:if test="${vo.userInfor != '공개'}"> style="background-color:pink"</c:if>>
 					<td>${vo.idx}</td>
 					<td><a href="MemberDetailView.ad?idx=${vo.idx}">${vo.mid}</a></td>
 					<td>${vo.nickName}</td>
@@ -111,7 +111,9 @@
 					</td>
 					<td>
             <c:if test="${vo.userDel == 'NO'}">활동 중</c:if>
-            <c:if test="${vo.userDel != 'NO'}"><font color="red">탈퇴 신청</font>(${vo.elapsed_date}일)</c:if>
+            <c:if test="${vo.userDel != 'NO'}"><font color="red">탈퇴 신청</font>(${vo.elapsed_date}일)<br/>
+            	<input type="button" value="회원삭제" onclick="" class="btn btn-outline-danger">
+            </c:if>
          </td>
 					<td>
 						<select name="level" id="level"	onchange="levelChange(this)">
