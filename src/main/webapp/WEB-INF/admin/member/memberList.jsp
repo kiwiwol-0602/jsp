@@ -59,6 +59,11 @@
 		let pageSize = document.getElementById("pageSize").value;
 		location.href = "MemberList.ad?pageSize="+pageSize+"&pag=${pag}&level=${level}";
 	}
+  
+  function memberDelete() {
+	  
+	
+}
   </script>
 </head>
 <body>
@@ -111,9 +116,8 @@
 					</td>
 					<td>
             <c:if test="${vo.userDel == 'NO'}">활동 중</c:if>
-            <c:if test="${vo.userDel != 'NO'}"><font color="red">탈퇴 신청</font>(${vo.elapsed_date}일)<br/>
-            	<input type="button" value="회원삭제" onclick="" class="btn btn-outline-danger">
-            </c:if>
+            <c:if test="${vo.userDel != 'NO'}"><font color="red">탈퇴 신청</font>(${vo.elapsed_date}일)<br/></c:if>
+            <c:if test="${vo.userDel != 'NO' && vo.elapsed_date >= 30}"><input type="button" value="회원삭제" onclick="memberDelete()" class="btn btn-outline-danger"></c:if>
          </td>
 					<td>
 						<select name="level" id="level"	onchange="levelChange(this)">

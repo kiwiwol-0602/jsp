@@ -10,6 +10,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import admin.claim.BoardClaimInputCommand;
+import admin.claim.ClaimDeleteOkCommand;
+import admin.claim.ClaimListCommand;
+import admin.claim.ClaimViewCheckCommand;
 import admin.member.MemberDetailViewCommand;
 import admin.member.MemberLevelChangeCommand;
 import admin.member.MemberListCommand;
@@ -33,6 +37,12 @@ public class AdminController extends HttpServlet{
 		// 인증처리 (spring에서는 aop의 개념)
 		HttpSession session = request.getSession();
 		int level = session.getAttribute("sLevel")==null ? 999 : (int) session.getAttribute("sLevel");
+		
+		if(com.equals("/BoardClaimInput")) {
+			command = new BoardClaimInputCommand();
+			command.execute(request, response);
+			return;
+		}
 		
 		if(level != 0) {
 			request.setAttribute("message", "로그인 후 사용하세요.");
@@ -63,6 +73,21 @@ public class AdminController extends HttpServlet{
 			command = new MemberDetailViewCommand();
 			command.execute(request, response);
 			viewPage += "/member/memberDetailView.jsp";
+		}
+		else if(com.equals("/ClaimList")) {
+			command = new ClaimListCommand();
+			command.execute(request, response);
+			viewPage += "/claim/claimList.jsp";
+		}
+		else if(com.equals("/ClaimViewCheck")) {
+			command = new ClaimViewCheckCommand();
+			command.execute(request, response);
+			return;
+		}
+		else if(com.equals("/ClaimDeleteOk")) {
+			command = new ClaimDeleteOkCommand();
+			command.execute(request, response);
+			return;
 		}
 		
 		/*

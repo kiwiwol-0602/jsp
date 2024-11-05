@@ -13,6 +13,9 @@ public class BoardVO {
 	private String wDate;
 	private String claim;
 	
+	private int dete_diff; // 작성된 게시물의 날짜 비교값
+	private int time_diff; // 작성된 게시물의 시간 비교값
+	
 	public int getIdx() {
 		return idx;
 	}
@@ -79,11 +82,24 @@ public class BoardVO {
 	public void setClaim(String claim) {
 		this.claim = claim;
 	}
-
+	public int getDete_diff() {
+		return dete_diff;
+	}
+	public void setDete_diff(int dete_diff) {
+		this.dete_diff = dete_diff;
+	}
+	public int getTime_diff() {
+		return time_diff;
+	}
+	public void setTime_diff(int time_diff) {
+		this.time_diff = time_diff;
+	}
+	
 	@Override
 	public String toString() {
 		return "BoardVO [idx=" + idx + ", mid=" + mid + ", nickName=" + nickName + ", title=" + title + ", content="
 				+ content + ", hostIp=" + hostIp + ", openSw=" + openSw + ", readNum=" + readNum + ", good=" + good + ", wDate="
-				+ wDate + ", claim=" + claim + "]";
+				+ wDate + ", claim=" + claim + ", dete_diff=" + dete_diff + ", time_diff=" + time_diff + "]";
 	}
+
 }

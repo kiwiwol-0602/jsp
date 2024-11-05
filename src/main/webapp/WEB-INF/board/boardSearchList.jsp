@@ -25,7 +25,10 @@
 <jsp:include page="/include/nav.jsp" />
 <p><br/></p>
 <div class="container">
-  <h2 class="text-center">게 시 판 리 스 트</h2>
+  <h2 class="text-center">게시판 조건별 리스트</h2>
+ 	<div>
+ 		(<font color="blue">${searchTitle}</font>(으)로 <font color="blue">${searchString}</font>(를)을 검색한 결과 <font color="red">${searchCnt}</font>건이 검색되었습니다. )
+ 	</div>
   <table class="table table-borderless mt-3 mb-0 p-0">
     <tr>
       <td><a href="BoardInput.bo" class="btn btn-success btn-sm">글쓰기</a></td>
@@ -39,7 +42,8 @@
       <th>글쓴날짜</th>
       <th>조회수(좋아요)</th>
     </tr>
-    <c:set var="curScrStartNo" value="${curScrStartNo}"/>
+    <%-- <c:set var="curScrStartNo" value="${curScrStartNo}"/> --%>
+    <c:set var="curScrStartNo" value="${searchCnt}"/>
     <c:forEach var="vo" items="${vos}" varStatus="st">
     	<c:if test="${vo.openSw == '공개' || sMid == vo.mid }">
 		    <tr>
@@ -47,12 +51,10 @@
 		      <td class="text-left">
 		      	<c:if test="${vo.claim == 'NO' || sMId == vo.mid || sLevel == 0}"><a href="BoardContent.bo?idx=${vo.idx}&pag=${pag}">${vo.title}</a></c:if>
 		      	<c:if test="${vo.claim != 'NO'&& sMId != vo.mid && sLevel != 0}"><a href="javascript:alert('현재글은 신고된 글입니다.')">${vo.title}</a></c:if>
-		      	<c:if test="${vo.time_diff <= 24 }"><img src="${ctp}/images/new.gif" /></c:if>
-		      	<%-- <c:if test="${vo.dete_diff == 0 }"><img src="${ctp}/images/new.gif" /></c:if> --%>
 		      </td>
 		      <td>${vo.nickName}</td>
 		      <td>${vo.wDate}</td>
-		      <td>${vo.readNum}(${vo.good})</td>
+		      <td>${vo.readNum}</td>
 		    </tr>
 	    </c:if>
 	    <c:set var="curScrStartNo" value="${curScrStartNo - 1}"/>
@@ -97,7 +99,7 @@
 <!-- 블록페이지 끝 -->
 <br/>
 <!-- 검색기 시작 -->
-<div class="container text-center">
+<!-- <div class="container text-center">
   <form name="searchForm" method="post" action="BoardSearchList.bo">
     <b>검색 : </b>
     <select name="search" id="search" onchange="cursorMove()">
@@ -108,7 +110,7 @@
     <input type="text" name="searchString" id="searchString" required />
     <input type="submit" value="검색" class="btn btn-secondary btn-sm"/>
   </form>
-</div>
+</div> -->
 <!-- 검색기 끝 -->
 
 <!-- The Modal -->

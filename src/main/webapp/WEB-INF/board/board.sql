@@ -25,8 +25,9 @@ insert into board values (default, 'admin', '관리맨', '게시판 서비스를
 
 --delete from board where idx = 14;
 
+select idx, mid, title, datediff(wDate, now()) as dete_diff from board order by idx desc;
 
-
+select idx, mid, title, timestampdiff(hour,wDate, now()) as time_diff from board order by idx desc;
 
 
 
