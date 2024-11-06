@@ -1,4 +1,4 @@
-package admin.claim;
+package admin.member;
 
 import java.io.IOException;
 
@@ -9,16 +9,15 @@ import javax.servlet.http.HttpServletResponse;
 import admin.AdminDAO;
 import admin.AdminInterface;
 
-public class ClaimViewCheckCommand implements AdminInterface {
+public class MemberDeleteOkCommand implements AdminInterface {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String flag = request.getParameter("flag")==null ? "" : request.getParameter("flag");
-		int idx = (request.getParameter("idx")==null || request.getParameter("idx").equals("")) ? 0 : Integer.parseInt(request.getParameter("idx"));
+		String mid = request.getParameter("mid")==null ? "" : request.getParameter("mid");
 		
 		AdminDAO dao = new AdminDAO();
 		
-		int res = dao.setClaimViewCheck(flag, idx);
+		int res = dao.setMemberDeleteOk(mid);
 		
 		response.getWriter().write(res + "");
 	}

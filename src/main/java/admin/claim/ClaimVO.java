@@ -7,11 +7,12 @@ public class ClaimVO {
 	private String claimMid;
 	private String claimContent;
 	private String claimDate;
-
+	
 	private String title;
 	private String nickName;
 	private String mid;
 	private String claim;
+	
 	public int getIdx() {
 		return idx;
 	}
@@ -72,12 +73,11 @@ public class ClaimVO {
 	public void setClaim(String claim) {
 		this.claim = claim;
 	}
+	
 	@Override
 	public String toString() {
 		return "ClaimVO [idx=" + idx + ", part=" + part + ", partIdx=" + partIdx + ", claimMid=" + claimMid
 				+ ", claimContent=" + claimContent + ", claimDate=" + claimDate + ", title=" + title + ", nickName=" + nickName
 				+ ", mid=" + mid + ", claim=" + claim + "]";
 	}
-	
-		
 }

@@ -12,6 +12,7 @@ public class BoardUpdateCommand implements BoardInterface {
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int idx = (request.getParameter("idx")==null || request.getParameter("idx").equals("")) ? 0 : Integer.parseInt(request.getParameter("idx"));
 		int pag = (request.getParameter("pag")==null || request.getParameter("pag").equals("")) ? 0 : Integer.parseInt(request.getParameter("pag"));
+		int pageSize = (request.getParameter("pageSize")==null || request.getParameter("pageSize").equals("")) ? 0 : Integer.parseInt(request.getParameter("pageSize"));
 		
 		BoardDAO dao = new BoardDAO();
 		
@@ -19,7 +20,7 @@ public class BoardUpdateCommand implements BoardInterface {
 		
 		request.setAttribute("vo", vo);
 		request.setAttribute("pag", pag);
-		
+		request.setAttribute("pageSize", pageSize);
 	}
 
 }

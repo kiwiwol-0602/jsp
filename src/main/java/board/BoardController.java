@@ -10,11 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import study2.ajax.AjaxIdCheck0Command;
-import study2.ajax.AjaxIdCheck1Command;
-import study2.ajax.AjaxPointCheckCommand;
-import study2.password.PassCheckOkCommand;
-
 @SuppressWarnings("serial")
 @WebServlet("*.bo")
 public class BoardController extends HttpServlet {
@@ -86,6 +81,21 @@ public class BoardController extends HttpServlet {
 			command = new BoardSearchListCommand();
 			command.execute(request, response);
 			viewPage += "/boardSearchList.jsp";
+		}
+		else if(com.equals("/BoardReplyInput")) {
+			command = new BoardReplyInputCommand();
+			command.execute(request, response);
+			return;
+		}
+		else if(com.equals("/BoardReplyDelete")) {
+			command = new BoardReplyDeleteCommand();
+			command.execute(request, response);
+			return;
+		}
+		else if(com.equals("/BoardReplyUpdate")) {
+			command = new BoardReplyUpdateCommand();
+			command.execute(request, response);
+			return;
 		}
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher(viewPage);

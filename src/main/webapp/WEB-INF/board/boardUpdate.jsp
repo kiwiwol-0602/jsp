@@ -23,7 +23,7 @@
 <p><br/></p>
 <div class="container">
   <form name="myform" method="post" action="BoardUpdateOk.bo" onsubmit="return fCheck()">
-	  <h2 class="text-center">작 성 글 수 정</h2>
+	  <h2 class="text-center">게시판 글 수정하기</h2>
     <table class="table table-bordered">
       <tr>
         <th class="text-center">글쓴이</th>
@@ -32,7 +32,7 @@
         </td>
       </tr>
       <tr class="mb-2">
-        <th class="text-center">글제목</th>741
+        <th class="text-center">글제목</th>
         <td>
           <input type="text" name="title" id="title" value="${vo.title}" class="form-control mr-1" autofocus required />
         </td>
@@ -44,7 +44,7 @@
       <tr class="mb-2">
         <th class="text-center"><label for="openSw" class="form-label">공개여부</label></th>
         <td>
-          <input type="radio" name="openSw" id="openSw1" value="공개" class="mr-1" ${vo.openSw=='공개' ? 'checked' : ''} /><label for="openSw1">공개</label> &nbsp;&nbsp;
+          <input type="radio" name="openSw" id="openSw1" value="공개" class="mr-1"   ${vo.openSw=='공개' ? 'checked' : ''} /><label for="openSw1">공개</label> &nbsp;&nbsp;
           <input type="radio" name="openSw" id="openSw2" value="비공개" class="mr-1" ${vo.openSw=='비공개' ? 'checked' : ''} /><label for="openSw2">비공개</label>
         </td>
       </tr>
@@ -52,7 +52,7 @@
     <table class="table table-borderless">
       <tr>
 			  <td class="text-left">
-		    	<button type="button" onclick="location.href='BoardContent.bo?idx=${vo.idx}&pag=${pag}'" class="btn btn-info mb-2">돌아가기</button>
+		    	<button type="button" onclick="location.href='BoardContent.bo?idx=${vo.idx}&pag=${pag}&pageSize=${pageSize}'" class="btn btn-info mb-2">돌아가기</button>
 			    <button type="reset" class="btn btn-warning mb-2">다시입력</button>
         </td>
         <td class="text-right">
@@ -60,10 +60,11 @@
 			  </td>
       </tr>
     </table>
-<%--     <input type="hidden" name="mid" value="${sMid}" /> --%>
+    <%-- <input type="hidden" name="mid" value="${sMid}" /> --%>
     <input type="hidden" name="idx" value="${vo.idx}" />
     <input type="hidden" name="hostIp" value="${pageContext.request.remoteAddr}" />
     <input type="hidden" name="pag" value="${pag}" />
+    <input type="hidden" name="pageSize" value="${pageSize}" />
   </form>
 </div>
 <p><br/></p>
