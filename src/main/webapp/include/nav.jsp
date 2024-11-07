@@ -40,6 +40,7 @@
 			      <a class="dropdown-item" href="${ctp}/study2/database/Dblist">Database</a>
 			      <a class="dropdown-item" href="PassCheckForm.st">Encryption</a>
 			      <a class="dropdown-item" href="AjaxTest.st">AJAX</a>
+			      <a class="dropdown-item" href="FileUpload.st">FileUpload</a>
 			    </div>
 	      </li>
 	      <li class="nav-item dropdown">
