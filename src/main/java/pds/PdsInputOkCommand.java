@@ -37,10 +37,7 @@ public class PdsInputOkCommand implements PdsInterface {
 		}
 		ofName = ofName.substring(0, ofName.lastIndexOf("/"));
 		fsName = fsName.substring(0, fsName.lastIndexOf("/"));
-		
-		//System.out.println("원본 파일명 집합 : " + ofName);
-		//System.out.println("서버 파일명 집합 : " + fsName);
-		
+				
 		// 업로드시킨 파일을 DB에 저장처리(1.변수저장처리, 2:vo담기, 3:DB저장하기)
 		String mid = multipartRequest.getParameter("mid")==null ? "" : multipartRequest.getParameter("mid");
 		String nickName = multipartRequest.getParameter("nickName")==null ? "" : multipartRequest.getParameter("nickName");
@@ -51,8 +48,11 @@ public class PdsInputOkCommand implements PdsInterface {
 		String openSw = multipartRequest.getParameter("openSw")==null ? "" : multipartRequest.getParameter("openSw");
 		String hostIp = multipartRequest.getParameter("hostIp")==null ? "" : multipartRequest.getParameter("hostIp");
 		
-		PdsVO vo = new PdsVO();
+		int pag = request.getParameter("pag")==null ? 1 : Integer.parseInt(request.getParameter("pag"));
+		int pageSize = request.getParameter("pageSize")==null ? 5 : Integer.parseInt(request.getParameter("pageSize"));
+
 		
+		PdsVO vo = new PdsVO();
 		vo.setMid(mid);
 		vo.setNickName(nickName);
 		vo.setfName(ofName);
@@ -63,18 +63,17 @@ public class PdsInputOkCommand implements PdsInterface {
 		vo.setContent(content);
 		vo.setOpenSw(openSw);
 		vo.setHostIp(hostIp);
-		System.out.println("vo : "+vo);
-		
+		System.out.println("vo : " + vo);
 		PdsDAO dao = new PdsDAO();
 		int res = dao.setPdsInputOk(vo);
 		
 		if(res != 0) {
-			request.setAttribute("message", "자료실에 파일이 업로드 되었습니다.");
-			request.setAttribute("url", "PdsList.pds");
+			request.setAttribute("message", "자료실에 자료가 업로드 되었습니다.");
+			request.setAttribute("url", "PdsList.pds?part="+part+"&pag="+pag+"&pageSize="+pageSize);
 		}
 		else {
-			request.setAttribute("message", "파일이 업로드 실패");
-			request.setAttribute("url", "PdsInput.pds");
+			request.setAttribute("message", "업로드 실패~~");
+			request.setAttribute("url", "PdsInput.pds?part="+part+"&pag="+pag+"&pageSize="+pageSize);
 		}
 	}
 

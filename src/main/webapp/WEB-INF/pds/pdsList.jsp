@@ -55,8 +55,11 @@
     // 분류별 검색하기
     function partCheck() {
     	let part = $("#part").val();
-    	if(part != '') location.href = "PdsSearchList.pds?part="+part;
-    	if(part == '전체') location.href = "PdsList.pds";
+    	//if(part != '') location.href = "PdsSearchList.pds?part="+part;
+    	//if(part != '') location.href = "PdsList.pds?pag=${pag}&pageSize=${pageSize}&part="+part;
+    	//if(part == '전체') location.href = "PdsList.pds";
+    	
+    	location.href = "PdsList.pds?pag=${pag}&pageSize=${pageSize}&part="+part;
     }
   </script>
 </head>
@@ -69,11 +72,13 @@
   <br/>
   <table class="table table-borderless m-0 p-0">
     <tr>
-      <td><a href="PdsInput.pds" class="btn btn-success btn-sm">자료올리기</a></td>
+      <td>
+        <c:if test="${sLevel > 2 || sLevel == 0}"><a href="PdsInput.pds?part=${part}&pag=${pag}&pageSize=${pageSize}" class="btn btn-success btn-sm">자료올리기</a></c:if>
+      </td>
       <td class="text-right">
         <form name="partForm">
           <select name="part" id="part" onchange="partCheck()">
-            <option ${part == '' ? 'selected' : ''}>전체</option>
+            <option ${part == '전체' ? 'selected' : ''}>전체</option>
             <option ${part == '학습' ? 'selected' : ''}>학습</option>
             <option ${part == '여행' ? 'selected' : ''}>여행</option>
             <option ${part == '음식' ? 'selected' : ''}>음식</option>
@@ -86,43 +91,68 @@
   <table class="table table-hover text-center">
     <tr class="table-secondary">
       <th>번호</th>
-      <th>자료제목</th>
       <th>올린이</th>
+      <th>자료제목</th>
       <th>올린날짜</th>
       <th>분류</th>
       <th>파일명(크기)</th>
       <th>다운수</th>
       <th>비고</th>
     </tr>
+    <c:set var="curScrStartNo" value="${curScrStartNo}"/>
     <c:forEach var="vo" items="${vos}" varStatus="st">
       <tr>
-        <td>${vo.idx}</td>
-        <td>
-          <a href="PdsContent.pds?idx=${vo.idx}&part=${part}">${vo.title}</a>
-        </td>
+        <td>${curScrStartNo}</td>
         <td>${vo.nickName}</td>
-        <td>${vo.fDate}</td>
-        <td>${vo.part}</td>
-        <td>
-          <c:set var="fNames" value="${fn:split(vo.fName,'/')}"/>
-          <c:set var="fSNames" value="${fn:split(vo.fSName,'/')}"/>
-          <c:forEach var="fName" items="${fNames}" varStatus="st">
-	          <a href="${ctp}/images/pds/${fSNames[st.index]}" download="${fName}" onclick="downNumCheck(${vo.idx})">${fName}</a><br/>
-          </c:forEach>          
-          (<fmt:formatNumber value="${vo.fSize/1024}" pattern="#,##0" />KByte)
-        </td>
-        <td>${vo.downNum}</td>
-        <td>
-          <c:if test="${vo.mid == sMid || sLevel == 0}">
-  	        <a href="javascript:pdsDeleteCheck('${vo.idx}','${vo.fSName}')" class="badge badge-danger">삭제</a><br/>
-          </c:if>
-          <a href="PdsTotalDown.pds" class="badge badge-primary">전체파일다운</a>
-        </td>
+        <c:if test="${vo.openSw == '공개' || sMid == vo.mid || sLevel == 0}">
+	        <td>
+	          <a href="PdsContent.pds?idx=${vo.idx}&part=${part}">${vo.title}</a>
+	        </td>
+	        <td>${vo.fDate}</td>
+	        <td>${vo.part}</td>
+	        <td>
+	          <c:set var="fNames" value="${fn:split(vo.fName,'/')}"/>
+	          <c:set var="fSNames" value="${fn:split(vo.fSName,'/')}"/>
+	          <c:forEach var="fName" items="${fNames}" varStatus="st">
+		          <c:if test="${sLevel != 1}"><a href="${ctp}/images/pds/${fSNames[st.index]}" download="${fName}" onclick="downNumCheck(${vo.idx})">${fName}</a><br/></c:if>
+		          <c:if test="${sLevel == 1}">${fName}<br/></c:if>
+	          </c:forEach>          
+	          (<fmt:formatNumber value="${vo.fSize/1024}" pattern="#,##0" />KByte)
+	        </td>
+	        <td>${vo.downNum}</td>
+	        <td>
+	          <c:if test="${vo.mid == sMid || sLevel == 0}">
+	  	        <a href="javascript:pdsDeleteCheck('${vo.idx}','${vo.fSName}')" class="badge badge-danger">삭제</a><br/>
+	          </c:if>
+	          <c:if test="${sLevel != 1}"><a href="PdsTotalDown.pds?idx=${vo.idx}" class="badge badge-primary">전체파일다운</a></c:if>
+	          <c:if test="${sLevel == 1}">정회원메뉴</c:if>
+	        </td>
+        </c:if>
+        <c:if test="${vo.openSw != '공개' && sMid != vo.mid && sLevel != 0}">
+          <td colspan="6" class="text-center">비공개 파일</td>
+        </c:if>
       </tr>
+      <c:set var="curScrStartNo" value="${curScrStartNo - 1}"/>
     </c:forEach>
     <tr><td colspan="8" class="m-0 p-0"></td></tr>
   </table>
 </div>
+
+<!-- 블록페이지 시작 -->
+<div class="text-center">
+  <ul class="pagination justify-content-center">
+	  <c:if test="${pag > 1}"><li class="page-item"><a class="page-link text-secondary" href="PdsList.pds?part=${part}&pag=1&pageSize=${pageSize}">첫페이지</a></li></c:if>
+	  <c:if test="${curBlock > 0}"><li class="page-item"><a class="page-link text-secondary" href="PdsList.pds?part=${part}&pag=${(curBlock-1)*blockSize + 1}&pageSize=${pageSize}">이전블록</a></li></c:if>
+	  <c:forEach var="i" begin="${(curBlock*blockSize)+1}" end="${(curBlock*blockSize) + blockSize}" varStatus="st">
+	    <c:if test="${i <= totPage && i == pag}"><li class="page-item active"><a class="page-link bg-secondary border-secondary" href="PdsList.pds?part=${part}&pag=${i}&pageSize=${pageSize}">${i}</a></li></c:if>
+	    <c:if test="${i <= totPage && i != pag}"><li class="page-item"><a class="page-link text-secondary" href="PdsList.pds?part=${part}&pag=${i}&pageSize=${pageSize}">${i}</a></li></c:if>
+	  </c:forEach>
+	  <c:if test="${curBlock < lastBlock}"><li class="page-item"><a class="page-link text-secondary" href="PdsList.pds?part=${part}&pag=${(curBlock+1)*blockSize+1}&pageSize=${pageSize}">다음블록</a></li></c:if>
+	  <c:if test="${pag < totPage}"><li class="page-item"><a class="page-link text-secondary" href="PdsList.pds?part=${part}&pag=${totPage}&pageSize=${pageSize}">마지막페이지</a></li></c:if>
+  </ul>
+</div>
+<!-- 블록페이지 끝 -->
+
 <p><br/></p>
 <jsp:include page="/include/footer.jsp" />
 </body>
