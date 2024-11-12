@@ -20,6 +20,10 @@ import admin.member.MemberDeleteOkCommand;
 import admin.member.MemberDetailViewCommand;
 import admin.member.MemberLevelChangeCommand;
 import admin.member.MemberListCommand;
+import admin.review.ReviewDeleteCommand;
+import admin.review.ReviewInputOkCommand;
+import admin.review.ReviewReplyDeleteCommand;
+import admin.review.ReviewReplyInputOkCommand;
 
 @SuppressWarnings("serial")
 @WebServlet("*.ad")
@@ -38,6 +42,26 @@ public class AdminController extends HttpServlet {
 		
 		if(com.equals("/BoardClaimInput")) {
 			command = new BoardClaimInputCommand();
+			command.execute(request, response);
+			return;
+		}
+		else if(com.equals("/ReviewInputOk")) {
+			command = new ReviewInputOkCommand();
+			command.execute(request, response);
+			return;
+		}
+		else if(com.equals("/ReviewDelete")) {
+			command = new ReviewDeleteCommand();
+			command.execute(request, response);
+			return;
+		}
+		else if(com.equals("/ReviewReplyInputOk")) {
+			command = new ReviewReplyInputOkCommand();
+			command.execute(request, response);
+			return;
+		}
+		else if(com.equals("/ReviewReplyDelete")) {
+			command = new ReviewReplyDeleteCommand();
 			command.execute(request, response);
 			return;
 		}
@@ -98,8 +122,6 @@ public class AdminController extends HttpServlet {
 		else if(com.equals("/BoardSelectDelete")) {
 			command = new BoardSelectDeleteCommand();
 			command.execute(request, response);
-			
-			
 			return;
 		}
 		
