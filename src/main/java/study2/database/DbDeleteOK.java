@@ -19,7 +19,7 @@ public class DbDeleteOK extends HttpServlet{
 		
 		DbTestDAO dao = new DbTestDAO();
 		
-		int res = dao.setDbDeleteOK(idx);
+		int res = dao.setDbDeleteOk(idx);
 
 		if(res != 0) {
     	request.setAttribute("message", "회원정보 삭제 완료");

@@ -27,7 +27,7 @@ public class DbInputOK extends HttpServlet{
     
     DbTestDAO dao = new DbTestDAO();
     
-    int res = dao.setDbInputOK(vo);    
+    int res = dao.setDbInputOk(vo);    
     
     if(res != 0) {
     	request.setAttribute("message", "회원 가입 완료");

@@ -12,10 +12,10 @@ import javax.servlet.http.HttpServletResponse;
 
 @SuppressWarnings("serial")
 @WebServlet("/study2/database/DbSearch")
-public class DbSearch extends HttpServlet{
+public class DbSearch extends HttpServlet {
 	@Override
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int idx = request.getParameter("idx") == null || request.getParameter("idx").equals("") ? 0 : Integer.parseInt(request.getParameter("idx"));
+		int idx = (request.getParameter("idx")==null || request.getParameter("idx").equals("")) ? 0 : Integer.parseInt(request.getParameter("idx"));
 		
 		DbTestDAO dao = new DbTestDAO();
 		
@@ -24,9 +24,7 @@ public class DbSearch extends HttpServlet{
 		request.setAttribute("vo", vo);
 		
 		String viewPage = "/WEB-INF/study2/database/dbUpdate.jsp";
-		
 		RequestDispatcher dispatcher = request.getRequestDispatcher(viewPage);
-		dispatcher.forward(request, response);
-		
+		dispatcher.forward(request, response);		
 	}
 }

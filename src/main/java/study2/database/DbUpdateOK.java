@@ -28,7 +28,7 @@ public class DbUpdateOK extends HttpServlet{
     vo.setGender(gender);
     vo.setAddress(address);
     
-    int res = dao.setDbUpdateOK(vo);    
+    int res = dao.setDbUpdateOk(vo);    
     
     if(res != 0) {
     	request.setAttribute("message", "회원정보 수정 완료");
